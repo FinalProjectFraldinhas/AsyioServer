@@ -5,6 +5,8 @@
  */
 package asyioserver;
 
+import connection.DbConn;
+
 /**
  *
  * @author missym
@@ -16,6 +18,13 @@ public class AsyioServer {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        DbConn dao = new DbConn();
+        try {
+            dao.readDataBase();
+        } catch (Exception ex) {
+            //Logger.getLogger(AsyioServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
