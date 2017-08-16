@@ -31,7 +31,7 @@ public static String clientData;
 	public void run() {
 		try {
 			s = new Socket();
-			s.connect(new InetSocketAddress(c.getIpAdd(), port));
+			//s.connect(new InetSocketAddress(c.getIpAdd(), port));
 			is = new ObjectInputStream(s.getInputStream());
 			do {	
                             clientData=(String) is.readObject();;

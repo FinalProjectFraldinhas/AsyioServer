@@ -21,7 +21,7 @@ public class AsyioServer {
         
         DbConn dao = new DbConn();
         try {
-            dao.readDataBase();
+           // dao.readDataBase();
         } catch (Exception ex) {
             //Logger.getLogger(AsyioServer.class.getName()).log(Level.SEVERE, null, ex);
         }
