@@ -15,30 +15,23 @@ import java.util.ArrayList;
  */
 public class Instalation {
     
-    private int inst_number;
+    private int id;
     private String inst_address;
     private ArrayList<Hardware> arduinos;
 
-    public Instalation(int inst_number, String inst_address, ArrayList<Hardware> arduinos) {
-        this.inst_number = inst_number;
+    public Instalation(String inst_address, Hardware arduino, ArrayList<Hardware> arduinos) {        
+        this.inst_address = inst_address;        
+        this.arduinos=arduinos;
+    }
+
+    public Instalation(int id, String inst_address) {
+        this.id = id;
         this.inst_address = inst_address;
         this.arduinos=new ArrayList<>();
     }
-
-    public Instalation(int inst_number, String inst_address) {
-        this.inst_number = inst_number;
-        this.inst_address = inst_address;
-    }
-
-    public Instalation() {
-    }
     
-    public int getInst_number() {
-        return inst_number;
-    }
-
-    public void setInst_number(int inst_number) {
-        this.inst_number = inst_number;
+    public int getId() {
+        return id;
     }
 
     public String getInst_address() {
@@ -57,16 +50,20 @@ public class Instalation {
         this.arduinos = arduinos;
     }
     
+    public String delete(){
+        return "DELETE FROM Instalation WHERE id="+this.id+";";
+    }
+    
     public String insert(){
-	return "INSERT INTO instalation (inst_address) VALUES('"+this.inst_address+"');";
+	return "INSERT INTO Instalation (inst_address) VALUES('"+this.inst_address+"');";
     }
 	
     public String update(){
-	return "UPDATE instalation SET inst_address='"+this.inst_address+"' WHERE inst_number="+Integer.toString(this.inst_number)+";";
+	return "UPDATE Instalation SET inst_address='"+this.inst_address+"' WHERE id="+Integer.toString(this.id)+";";
     }
 	
     public String select(){
-	return "SELECT * FROM instalation;";
+	return "SELECT * FROM Instalation;";
     }
 	
     public Instalation sqlObjectContructor(ResultSet rs) throws SQLException{

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Client {
     
-        private int client_num;
+        private int id;
 	private String client_name;
         private String client_address;
         private int client_phone;
@@ -24,8 +24,7 @@ public class Client {
         private String client_password;
         private ArrayList<Instalation> instalations;
 
-    public Client(int client_num, String client_name, String client_address, int client_phone, int client_nif, String client_email, String client_password, ArrayList<Instalation> instalations) {
-        this.client_num = client_num;
+    public Client(String client_name, String client_address, int client_phone, int client_nif, String client_email, String client_password, ArrayList<Instalation> instalations) {
         this.client_name = client_name;
         this.client_address = client_address;
         this.client_phone = client_phone;
@@ -34,8 +33,8 @@ public class Client {
         this.client_password = client_password;
         this.instalations=new ArrayList<>();
     }
-        public Client(int client_num, String client_name, String client_address, int client_phone, int client_nif, String client_email, String client_password) {
-        this.client_num = client_num;
+        public Client(int id, String client_name, String client_address, int client_phone, int client_nif, String client_email, String client_password) {
+        this.id = id;
         this.client_name = client_name;
         this.client_address = client_address;
         this.client_phone = client_phone;
@@ -47,12 +46,8 @@ public class Client {
     public Client() {
     }
         
-    public int getClient_num() {
-        return client_num;
-    }
-
-    public void setClient_num(int client_num) {
-        this.client_num = client_num;
+    public int getId() {
+        return id;
     }
 
     public String getClient_name() {
@@ -104,7 +99,7 @@ public class Client {
     }
 
     public String delete(){
-        return "DELETE FROM client WHERE client_num="+this.client_num+";";
+        return "DELETE FROM client WHERE id="+this.id+";";
     }
 	
 	
@@ -113,7 +108,7 @@ public class Client {
     }
 	
     public String update(){
-	return "UPDATE client SET client_name='"+this.client_name+"', client_address="+this.client_address+", client_phone="+Integer.toString(this.client_phone)+", client_nif="+Integer.toString(this.client_nif)+", client_email="+this.client_email+", client_password='"+this.client_password+"'  WHERE client_num="+Integer.toString(this.client_num)+";";
+	return "UPDATE client SET client_name='"+this.client_name+"', client_address="+this.client_address+", client_phone="+Integer.toString(this.client_phone)+", client_nif="+Integer.toString(this.client_nif)+", client_email="+this.client_email+", client_password='"+this.client_password+"'  WHERE id="+Integer.toString(this.id)+";";
     }
 	
     public String select(){
