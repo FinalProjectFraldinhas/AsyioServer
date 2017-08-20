@@ -12,7 +12,7 @@ package controller;
 public class MountObjects {
     
     
-   /* @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
 	public ArrayList<Album> getAllAlbums() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Album a= new Album();
 		Music m=new Music();
@@ -23,6 +23,6 @@ public class MountObjects {
 			alb.setAlbunMusics((ArrayList<Music>)(ArrayList<?>)selectFillArrayInObject(alb, m));
 		}		
 		return allAlbums;
-	}*/
+	}
     
 }
