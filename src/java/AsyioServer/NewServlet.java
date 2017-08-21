@@ -40,7 +40,7 @@ public class NewServlet extends HttpServlet {
             
             
             //out.close(); 
-         StringBuilder  jb = new StringBuilder ();
+        StringBuilder  jb = new StringBuilder ();
         String line = null;
         try {
             BufferedReader reader = request.getReader();
