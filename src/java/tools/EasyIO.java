@@ -13,11 +13,15 @@ import java.util.Scanner;
  */
 public class EasyIO {
 	
-	private Scanner scanner= new Scanner(System.in);
+	private final Scanner scanner;
 
-	public void write(String arg) {
+	public static void write(String arg) {
 		System.out.print(arg);
 	}
+
+    public EasyIO() {
+        this.scanner = new Scanner(System.in);
+    }
 	
 	public void writeL(String arg) {
 		System.out.println(arg);
