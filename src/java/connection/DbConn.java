@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
+import model.client;
 
 /**
  *
@@ -18,7 +19,7 @@ public class DbConn {
 
 	static String user = "missym";
 	static String pass = "456";
-	static String db   = "AsyioDB";
+	static String db   = "asyio";
 	static String url  = "jdbc:mysql://localhost:3306/"+db;
 	
 	static Connection con;
@@ -37,6 +38,7 @@ public class DbConn {
 			con = DriverManager.getConnection(url,user,pass);
 			return con;
 		} catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
 		}
 		return null;	
 	}
@@ -97,21 +99,31 @@ public class DbConn {
 	}
 	
 	public Object selectOneById(Object obj) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		Method temp=obj.getClass().getMethod("getId");
-		int i=(int) temp.invoke(obj);		
+		
+            Method temp=obj.getClass().getMethod("getId");
+		int i=(int) temp.invoke(obj);
+               
 		String x="SELECT * FROM "+obj.getClass().getSimpleName()+" WHERE id="+Integer.toString(i)+";";
-		Method temp1=obj.getClass().getMethod("sqlObjectContructor");		
-				
+                
+		Method temp1=obj.getClass().getMethod("sqlObjectContructor", ResultSet.class );		
+			
 		try {
-			prep = getConnection().prepareStatement(x);			
+                 	
+
+			prep = getConnection().prepareStatement(x);	
+                           
 			rs = prep.executeQuery();
+                  rs.next();
 			Object o=temp1.invoke(obj, rs);
+                              
+                        //new client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9))
 			con.close();
 			return o;
-		} catch (SQLException e) {
+		} catch (Exception e) {
+                    System.out.println("OLAAAAAAAAAA"+e.getCause().toString());
 		}
 		
-		return null;		
+		return null;	
 	} 
 	
 	public ArrayList<Object> selectFillArrayInObject(Object obj, Object arr) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{

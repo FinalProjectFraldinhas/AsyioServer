@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import model.Client;
+import model.client;
 
 /**
  *
@@ -20,11 +20,11 @@ public class ArduinoClient {
 private final static int port=3450;	
 public static String clientData;
 	
-	private Client c;
+	private client c;
 	private ObjectInputStream is;
 	private Socket s;
 	
-	public ArduinoClient( Client c) {
+	public ArduinoClient( client c) {
 		this.c = c;		
 	}
 	

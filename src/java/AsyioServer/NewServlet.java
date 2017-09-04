@@ -5,15 +5,13 @@
  */
 package AsyioServer;
 
+import com.google.gson.Gson;
 import java.io.*;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.json.JSONObject;
-import static tools.EasyIO.*;
+import javax.servlet.http.*;
+import service.HttpRequests;
+import service.Req;
 
 /**
  *
@@ -21,7 +19,7 @@ import static tools.EasyIO.*;
  */
 
 public class NewServlet extends HttpServlet {
-
+        HttpRequests hr=new HttpRequests();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,35 +31,30 @@ public class NewServlet extends HttpServlet {
      */
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+            response.setContentType("text/html;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           //  PrintWriter out = response.getWriter();
+            response.setContentType("application/json");  
+             
+            Gson gson = new Gson();
+ 
+             try {
+            StringBuilder sb = new StringBuilder();
+            String s;
+            while ((s = request.getReader().readLine()) != null) {
+                sb.append(s);}
+      
+            Req r = (Req) gson.fromJson(sb.toString(), Req.class);            
+            Class[] cArg = new Class[r.getParams().length];
+            for(int i=0; i<r.getParams().length; cArg[i++]=String.class); 
+            Method temp=hr.getClass().getMethod(r.getExecute(), cArg);
+	    Object o=(Object) temp.invoke(hr, r.getParams());
+            String json = gson.toJson(o);
+            out.print(json);
+            out.flush();
             
-            
-            //out.close(); 
-        StringBuilder  jb = new StringBuilder ();
-        String line = null;
-        try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                jb.append(line);
-            }
-        } catch (Exception e) {
-        }
-
-        try {
-            JSONObject jsonObject = new JSONObject(jb.toString());
-            String email = jsonObject.getString("email");
-           
-            out.println ("Hello " + email + ", this is SpecialServlet!"); 
-            write(email);
-        } catch (Exception e) {
-        }
-         
-    }
-            
-            
+        } catch (Exception e) {}
+    } 
         }
     
 
