@@ -8,7 +8,9 @@ package service;
 import connection.DbConn;
 import java.util.ArrayList;
 import model.*;
-import static tools.Tools.buildObjectMap;
+import tools.Helper;
+import tools.Tools;
+import static tools.Tools.h;
 
 /**
  *
@@ -35,8 +37,9 @@ public class HttpRequests {
                 for( int i=0; i<temp_client.getInstalations().size(); temp_client.getInstalations().get(i++).setArduinos((ArrayList<Hardware>) (ArrayList<?>) conn.selectFillArrayInObject(temp_client.getInstalations().get(i), temp_hardware)));
                 
                 */
-             
-               temp_client=(Client) buildObjectMap(temp_client);
+           
+               
+               temp_client=(Client) h.buildObjectMap(temp_client, h);
                 return temp_client;
             }
         } catch (Exception e) {
@@ -52,4 +55,5 @@ public class HttpRequests {
         return null;
     }*/
 
+    
 }

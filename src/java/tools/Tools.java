@@ -6,9 +6,7 @@
 package tools;
 
 import connection.DbConn;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 
 /**
@@ -28,45 +26,56 @@ public class Tools {
         for (int i = 0; i < values.size(); s += String.valueOf(values.get(i++)) + " ");
         return s;
     }
-    
-    
-    
-    public static Object buildObjectMap(Object obj) {
 
-        DbConn conn = new DbConn();
+    public static Helper h = new Helper() {
+        @Override
+        public Object buildObjectMap(Object obj, Helper h) {
 
-        Field[] fields = obj.getClass().getDeclaredFields();
+            DbConn conn = new DbConn();
 
-        for (Field f : fields) {
+            Field[] fields = obj.getClass().getDeclaredFields();
 
-            if (f.getType().isAssignableFrom(ArrayList.class)) {
+            for (Field f : fields) {
 
-                try {
-                    Object temp=new Object();
-                    Class x = Class.forName("model." + f.getName().toString());
-                    try{
-                    Constructor c = x.getConstructor(Integer.class);
-                    temp = c.newInstance(0);
+                if (f.getType().isAssignableFrom(ArrayList.class)) {
 
-                    Method mset = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
-                    Method mget = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
-                    
-                    mset.invoke(obj, conn.selectFillArrayInObject(obj, temp));
-                    ArrayList<Object> tempArr=(ArrayList<Object>) mget.invoke(obj);
-                    
-                    temp=tempArr.get(0);
-                   }
-                    catch(NoSuchMethodException e){}
-                       
-                    return x.equals(Class.forName("model.Counts" ))? obj : buildObjectMap(temp);  
-                    
+                    try {
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        Object temp = new Object();
+                        Class x = Class.forName("model." + f.getName().toString());
+                        try {
+                            Constructor c = x.getConstructor(Integer.class);
+                            temp = c.newInstance(0);
+
+                            Method mset = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
+                            Method mget = obj.getClass().getMethod("get" + f.getName().toString());
+
+                            mset.invoke(obj, conn.selectFillArrayInObject(obj, temp));
+
+                            ArrayList<Object> tempArr = (ArrayList<Object>) mget.invoke(obj);
+
+                            for (int i = 0; i < tempArr.size(); i++) {
+                                temp = tempArr.get(i);
+                                buildObjectMapHelper(h, temp);
+                            }
+
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        }
+
+                        return x.equals(Class.forName("model.Counts")) ? (Object) obj : buildObjectMap(temp, h);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            return obj;
         }
-          return obj;   
+    };
+
+    public static Object buildObjectMapHelper(Helper h, Object o) throws ClassNotFoundException {
+        return buildObjectMapHelper((Helper) h.buildObjectMap(o, h), o);
     }
 
 }
