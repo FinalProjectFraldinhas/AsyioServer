@@ -5,8 +5,7 @@
  */
 package controller;
 
-import connection.ArduinoClient;
-import model.client;
+
 
 /**
  *
@@ -16,10 +15,10 @@ public class DataTrimNSave {
     
     public DataTrimNSave(){}
     
-   ArduinoClient c=new ArduinoClient(new client());
+  // ArduinoClient c=new ArduinoClient(new Client());
     
     
-    String data = c.clientData;
+   // String data = c.clientData;
     
     
     
