@@ -42,13 +42,14 @@ public class Tools {
                     try {
 
                         Object temp = new Object();
-                        Class x = Class.forName("model." + f.getName().toString());
+                        Class<?> x = Class.forName("model." + f.getName().toString());
                         try {
-                            Constructor c = x.getConstructor(Integer.class);
+                            Constructor<?> c = x.getConstructor(Integer.class);
                             temp = c.newInstance(0);
 
                             Method mset = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
-                            Method mget = obj.getClass().getMethod("get" + f.getName().toString());
+                            
+                            Method mget = obj.getClass().getMethod("get" + f.getName());
 
                             mset.invoke(obj, conn.selectFillArrayInObject(obj, temp));
 
@@ -63,7 +64,7 @@ public class Tools {
                             e.printStackTrace();
                         }
 
-                        return x.equals(Class.forName("model.Counts")) ? (Object) obj : buildObjectMap(temp, h);
+                        return x.equals(Class.forName("model.Counts")) ? obj : buildObjectMap(temp, h);
 
                     } catch (Exception e) {
                         e.printStackTrace();

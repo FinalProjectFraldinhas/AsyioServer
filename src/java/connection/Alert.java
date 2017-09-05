@@ -158,7 +158,7 @@ public class Alert {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
         BasicResponseHandler responseHandler = new BasicResponseHandler();
-        String response = (String) httpClient.execute(httpPost, responseHandler);
+        String response = httpClient.execute(httpPost, responseHandler);
 
         return response;
     }

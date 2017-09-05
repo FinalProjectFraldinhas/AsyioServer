@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Instalation {
     
-    private Integer id;
+    private int id;
     private String inst_address;
     private ArrayList<Hardware> Hardware;
 

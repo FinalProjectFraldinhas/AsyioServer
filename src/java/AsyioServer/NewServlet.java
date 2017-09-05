@@ -18,6 +18,7 @@ import service.Req;
  * @author Miss M
  */
 
+@SuppressWarnings("serial")
 public class NewServlet extends HttpServlet {
         HttpRequests hr=new HttpRequests();
     /**
@@ -44,11 +45,11 @@ public class NewServlet extends HttpServlet {
             while ((s = request.getReader().readLine()) != null) {
                 sb.append(s);}
       
-            Req r = (Req) gson.fromJson(sb.toString(), Req.class);            
-            Class[] cArg = new Class[r.getParams().length];
+            Req r = gson.fromJson(sb.toString(), Req.class);            
+            Class<?>[] cArg = new Class<?>[r.getParams().length];
             for(int i=0; i<r.getParams().length; cArg[i++]=String.class); 
             Method temp=hr.getClass().getMethod(r.getExecute(), cArg);
-	    Object o=(Object) temp.invoke(hr, r.getParams());
+	    Object o= temp.invoke(hr, r.getParams());
             String json = gson.toJson(o);
             out.print(json);
             out.flush();
