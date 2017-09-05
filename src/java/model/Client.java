@@ -23,8 +23,8 @@ public class Client {
         private String client_address;
         private String client_zipCode;
         private State state;
-        private ArrayList<Instalation> instalations;
-        private ArrayList<Login> logins;
+        private ArrayList<Instalation> Instalation;
+        private ArrayList<Login> Login;
 
     public Client(int id, String client_name, String client_phone, String client_nif, String client_email, String client_address, String client_zipCode, int state) {
         this.id = id;
@@ -35,13 +35,23 @@ public class Client {
         this.client_address = client_address;
         this.client_zipCode = client_zipCode;
         this.state = State.getEnum(state);
-        this.instalations=new ArrayList<>();
-        this.logins=new ArrayList<>();
+        this.Instalation=new ArrayList<>();
+        this.Login=new ArrayList<>();
     }
 
-    public Client(int id) {
-        this.id = id;
+    public Client(String client_name, String client_phone, String client_nif, String client_email, String client_address, String client_zipCode, State state, ArrayList<Instalation> instalations, ArrayList<Login> logins) {
+        this.client_name = client_name;
+        this.client_phone = client_phone;
+        this.client_nif = client_nif;
+        this.client_email = client_email;
+        this.client_address = client_address;
+        this.client_zipCode = client_zipCode;
+        this.state = state;
+        this.Instalation = instalations;
+        this.Login = logins;
     }
+    
+    
 
     public String delete(){
         return "UPDATE client SET id_state=0  WHERE id="+Integer.toString(this.id)+";";
@@ -120,20 +130,20 @@ public class Client {
         this.client_zipCode = client_zipCode;
     }
 
-    public ArrayList<Instalation> getInstalations() {
-        return instalations;
+    public ArrayList<Instalation> getInstalation() {
+        return Instalation;
     }
 
-    public void setInstalations(ArrayList<Instalation> instalations) {
-        this.instalations = instalations;
+    public void setInstalation(ArrayList<Instalation> instalations) {
+        this.Instalation = instalations;
     }
 
-    public ArrayList<Login> getLogins() {
-        return logins;
+    public ArrayList<Login> getLogin() {
+        return Login;
     }
 
-    public void setLogins(ArrayList<Login> logins) {
-        this.logins = logins;
+    public void setLogin(ArrayList<Login> logins) {
+        this.Login = logins;
     }
     
     

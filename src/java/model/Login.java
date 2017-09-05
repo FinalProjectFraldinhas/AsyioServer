@@ -23,16 +23,7 @@ public class Login {
         this.login = login;
         this.password = password;
         this.permission = permission;
-        this.state = State.getEnum(state);;
-    }
-
-    public Login(String login, String password, State state) {
-        this.login = login;
-        this.password = password;
-        this.state = state;
-    }
-    
-    public Login() {
+        this.state = State.getEnum(state);
     }
 
     public String getLogin() {

@@ -8,6 +8,7 @@ package service;
 import connection.DbConn;
 import java.util.ArrayList;
 import model.*;
+import static tools.Tools.buildObjectMap;
 
 /**
  *
@@ -21,17 +22,21 @@ public class HttpRequests {
 
         try {
 
-            if (conn.customSelect("SELECT * FROM login WHERE login='"+username+"' AND password='"+password+"' AND id_Client="+id+" AND state='ACTIVE';").size()>0) {
+            if (conn.customSelect("SELECT * FROM login WHERE login='"+username+"' AND password='"+password+"' AND id_Client="+id+" AND id_State=1;").size()>0) {
 
-                Client temp = new Client(Integer.parseInt(id));
-                Login log = new Login(username, password, State.ACTIVE);
-
-                ArrayList<Login> logs = (ArrayList<Login>) (ArrayList<?>) conn.selectFillArrayInObject(temp, log);
-
-                temp = (Client) conn.selectOneById(temp);
-                temp.setLogins(logs);
-                return temp;
-                //3 temp.setInstalations(instalations);
+                Client temp_client = new Client(Integer.parseInt(id), "", "", "", "", "", "", 0);
+                /*Login temp_log = new Login("", "", "", 0);
+                Instalation temp_instalation= new Instalation(0, "");
+                Hardware temp_hardware=new Hardware(0, "", "");*/
+                
+                temp_client = (Client) conn.selectOneById(temp_client);
+               /* temp_client.setLogins((ArrayList<Login>) (ArrayList<?>) conn.selectFillArrayInObject(temp_client, temp_log));
+                temp_client.setInstalations( (ArrayList<Instalation>) (ArrayList<?>) conn.selectFillArrayInObject(temp_client, temp_instalation));
+                for( int i=0; i<temp_client.getInstalations().size(); temp_client.getInstalations().get(i++).setArduinos((ArrayList<Hardware>) (ArrayList<?>) conn.selectFillArrayInObject(temp_client.getInstalations().get(i), temp_hardware)));
+                
+                */
+               temp_client=(Client) buildObjectMap(temp_client);
+                return temp_client;
             }
         } catch (Exception e) {
             e.printStackTrace();

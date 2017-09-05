@@ -13,7 +13,8 @@ import java.util.HashMap;
  */
 public enum State {
     
-        INACTIVE(1), ACTIVE(2);
+    
+        INACTIVE(0), ACTIVE(1);
     
 	public int code;
         

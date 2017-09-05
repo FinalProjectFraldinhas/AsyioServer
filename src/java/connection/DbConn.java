@@ -102,7 +102,7 @@ public class DbConn {
         Method temp = obj.getClass().getMethod("getId");
         int i = (int) temp.invoke(obj);
 
-        String x = "SELECT * FROM " + obj.getClass().getSimpleName() + " WHERE id=" + Integer.toString(i) + " AND id_state=1;";
+        String x = "SELECT * FROM " + obj.getClass().getSimpleName() + " WHERE id=" + Integer.toString(i) + " AND id_State=1;";
 
         Method temp1 = obj.getClass().getMethod("sqlObjectContructor", ResultSet.class);
 
@@ -128,7 +128,7 @@ public class DbConn {
 
         Method temp = obj.getClass().getMethod("getId");
         int i = (int) temp.invoke(obj);
-        String x = "SELECT * FROM " + arr.getClass().getSimpleName() + " LEFT JOIN " + obj.getClass().getSimpleName() + " ON " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + " = " + obj.getClass().getSimpleName() + ".id  WHERE " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + "=" + Integer.toString(i) + " AND state='ACTIVE';";
+        String x = "SELECT * FROM " + arr.getClass().getSimpleName() + " LEFT JOIN " + obj.getClass().getSimpleName() + " ON " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + " = " + obj.getClass().getSimpleName() + ".id  WHERE " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + "=" + Integer.toString(i) + " AND " + arr.getClass().getSimpleName() + ".id_State=1;";
 
         Method temp1 = arr.getClass().getMethod("sqlObjectContructor", ResultSet.class);
         ArrayList<Object> all = new ArrayList<>();
@@ -160,6 +160,7 @@ public class DbConn {
             con.close();
 
         } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return temp;

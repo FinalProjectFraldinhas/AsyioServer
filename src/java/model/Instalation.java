@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Instalation {
     
-    private int id;
+    private Integer id;
     private String inst_address;
     private ArrayList<Hardware> arduinos;
 
@@ -29,6 +29,12 @@ public class Instalation {
         this.inst_address = inst_address;
         this.arduinos=new ArrayList<>();
     }
+    
+    public Instalation(Integer id) {
+        this.id = id;
+        this.inst_address = "";
+        this.arduinos=new ArrayList<>();
+    } 
     
     public int getId() {
         return id;
