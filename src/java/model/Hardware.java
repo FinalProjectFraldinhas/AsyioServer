@@ -18,19 +18,26 @@ public class Hardware {
     private int id;
     private String hard_name;
     private String hard_ip;
-    private ArrayList<Sensor> sensors;
+    private ArrayList<Sensor> Sensor;
 
-    public Hardware(String hard_name, String hard_ip, ArrayList<Sensor> sensors) {
+    public Hardware(String hard_name, String hard_ip, ArrayList<Sensor> Sensor) {
         this.hard_name = hard_name;
         this.hard_ip=hard_ip;
-        this.sensors=sensors;
+        this.Sensor=Sensor;
     }
     
     public Hardware(int id, String hard_name, String hard_ip) {
         this.id = id;
         this.hard_name = hard_name;
         this.hard_ip=hard_ip;
-        this.sensors=new ArrayList<>();
+        this.Sensor=new ArrayList<>();
+    }
+    
+    public Hardware(Integer id) {
+        this.id = 0;
+        this.hard_name = "";
+        this.hard_ip="";
+        this.Sensor=new ArrayList<>();
     }
     
     public Hardware() {
@@ -56,12 +63,12 @@ public class Hardware {
         this.hard_ip = hard_ip;
     }
 
-    public ArrayList<Sensor> getSensors() {
-        return sensors;
+    public ArrayList<Sensor> getSensor() {
+        return Sensor;
     }
 
-    public void setSensors(ArrayList<Sensor> sensors) {
-        this.sensors = sensors;
+    public void setSensor(ArrayList<Sensor> Sensor) {
+        this.Sensor = Sensor;
     }
        
     public String delete(){

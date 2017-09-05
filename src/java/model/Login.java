@@ -14,6 +14,7 @@ import java.sql.SQLException;
  */
 public class Login {
     
+    private int id;    
     private String login;
     private String password;
     private String permission;
@@ -24,6 +25,21 @@ public class Login {
         this.password = password;
         this.permission = permission;
         this.state = State.getEnum(state);
+    }
+
+    public Login(Integer id) {
+        this.id = id;
+        this.password = "";
+        this.permission = "";
+        this.state = null;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -78,6 +94,8 @@ public class Login {
     public Login sqlObjectContructor(ResultSet rs) throws SQLException{
 	return new Login(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
     }
+
+
     
     
     

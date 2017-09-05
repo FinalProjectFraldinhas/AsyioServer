@@ -30,7 +30,7 @@ public class Tools {
     }
     
     
-
+    
     public static Object buildObjectMap(Object obj) {
 
         DbConn conn = new DbConn();
@@ -42,22 +42,31 @@ public class Tools {
             if (f.getType().isAssignableFrom(ArrayList.class)) {
 
                 try {
-
+                    Object temp=new Object();
                     Class x = Class.forName("model." + f.getName().toString());
+                    try{
                     Constructor c = x.getConstructor(Integer.class);
-                    Object temp = c.newInstance(0);
+                    temp = c.newInstance(0);
 
-                    Method m = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
-                    m.invoke(obj, conn.selectFillArrayInObject(obj, temp));
-
-                    return obj;
+                    Method mset = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
+                    Method mget = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
+                    
+                    mset.invoke(obj, conn.selectFillArrayInObject(obj, temp));
+                    ArrayList<Object> tempArr=(ArrayList<Object>) mget.invoke(obj);
+                    
+                    temp=tempArr.get(0);
+                   }
+                    catch(NoSuchMethodException e){}
+                       
+                    return x.equals(Class.forName("model.Counts" ))? obj : buildObjectMap(temp);  
+                    
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        return null;
+          return obj;   
     }
 
 }

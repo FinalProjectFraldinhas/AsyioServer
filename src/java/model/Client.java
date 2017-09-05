@@ -142,8 +142,8 @@ public class Client {
         return Login;
     }
 
-    public void setLogin(ArrayList<Login> logins) {
-        this.Login = logins;
+    public void setLogin(ArrayList<Login> Login) {
+        this.Login = Login;
     }
     
     

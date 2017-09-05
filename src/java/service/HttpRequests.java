@@ -35,6 +35,7 @@ public class HttpRequests {
                 for( int i=0; i<temp_client.getInstalations().size(); temp_client.getInstalations().get(i++).setArduinos((ArrayList<Hardware>) (ArrayList<?>) conn.selectFillArrayInObject(temp_client.getInstalations().get(i), temp_hardware)));
                 
                 */
+             
                temp_client=(Client) buildObjectMap(temp_client);
                 return temp_client;
             }

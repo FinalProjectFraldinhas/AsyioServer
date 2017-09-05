@@ -16,17 +16,23 @@ public class Sensor {
     
     private int id;
     private String sensor_name;
-    private ArrayList <Counts> counts;
+    private ArrayList <Counts> Counts;
 
-    public Sensor(String sensor_name, ArrayList<Counts> counts) {
+    public Sensor(String sensor_name, ArrayList<Counts> Counts) {
         this.sensor_name = sensor_name;
-        this.counts = counts;
+        this.Counts = Counts;
     }
 
     public Sensor(int id, String sensor_name) {
         this.id = id;
         this.sensor_name = sensor_name;
-        this.counts=new ArrayList<>();
+        this.Counts=new ArrayList<>();
+    }
+    
+    public Sensor(Integer id) {
+        this.id = id;
+        this.sensor_name = "";
+        this.Counts=new ArrayList<>();
     }
 
     public int getId() {
@@ -42,11 +48,11 @@ public class Sensor {
     }
 
     public ArrayList <Counts> getCounts() {
-        return counts;
+        return Counts;
     }
 
     public void setCounts(ArrayList <Counts> counts) {
-        this.counts = counts;
+        this.Counts = counts;
     }
     
     public String delete(){

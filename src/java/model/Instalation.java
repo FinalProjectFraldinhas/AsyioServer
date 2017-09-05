@@ -17,23 +17,23 @@ public class Instalation {
     
     private Integer id;
     private String inst_address;
-    private ArrayList<Hardware> arduinos;
+    private ArrayList<Hardware> Hardware;
 
-    public Instalation(String inst_address, Hardware arduino, ArrayList<Hardware> arduinos) {        
+    public Instalation(String inst_address, Hardware arduino, ArrayList<Hardware> Hardware) {        
         this.inst_address = inst_address;        
-        this.arduinos=arduinos;
+        this.Hardware=Hardware;
     }
 
     public Instalation(int id, String inst_address) {
         this.id = id;
         this.inst_address = inst_address;
-        this.arduinos=new ArrayList<>();
+        this.Hardware=new ArrayList<>();
     }
     
     public Instalation(Integer id) {
         this.id = id;
         this.inst_address = "";
-        this.arduinos=new ArrayList<>();
+        this.Hardware=new ArrayList<>();
     } 
     
     public int getId() {
@@ -48,12 +48,12 @@ public class Instalation {
         this.inst_address = inst_address;
     }
 
-    public ArrayList<Hardware> getArduinos() {
-        return arduinos;
+    public ArrayList<Hardware> getHardware() {
+        return Hardware;
     }
 
-    public void setArduinos(ArrayList<Hardware> arduinos) {
-        this.arduinos = arduinos;
+    public void setHardware(ArrayList<Hardware> Hardware) {
+        this.Hardware = Hardware;
     }
     
     public String delete(){
