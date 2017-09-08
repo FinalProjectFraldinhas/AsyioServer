@@ -5,12 +5,14 @@
  */
 package tools;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import service.GenericResponse;
+
 /**
  *
  * @author Miss M
  */
-public interface Helper {
-    
-        public Object buildObjectMap( Helper h, Object obj);
-    
+public interface RowMapper {
+    public GenericResponse mapRow(ResultSet rs) throws SQLException;
 }

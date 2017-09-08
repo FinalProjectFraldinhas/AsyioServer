@@ -9,7 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
-import model.Client;
+import service.GenericResponse;
+import tools.RowMapper;
 
 /**
  *
@@ -42,37 +43,19 @@ public class DbConn {
         return null;
     }
 
-    public void deleteFrom(Object obj) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Method temp = obj.getClass().getMethod("delete");
+    public void objectExecuteOnDb(Object obj, String operation) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Method temp = obj.getClass().getMethod(operation);
         String s = (String) temp.invoke(obj);
-        try {
-            prep = getConnection().prepareStatement(s);
-            prep.execute();
-            con.close();
-        } catch (SQLException e) {
-        }
+        stringExecuteOnDb(s);
     }
 
-    public void insertInto(Object obj) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Method temp = obj.getClass().getMethod("insert");
-        String s = (String) temp.invoke(obj);
+    public void stringExecuteOnDb(String s) {
         try {
-            prep = getConnection().prepareStatement(s);
+            prep = getConnection().prepareStatement(s
+            );
             prep.execute();
             con.close();
-        } catch (SQLException e) {
-        }
-
-    }
-
-    public void updateWhere(Object obj) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Method temp = obj.getClass().getMethod("update");
-        String s = (String) temp.invoke(obj);
-        try {
-            prep = getConnection().prepareStatement(s);
-            prep.execute();
-            con.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
         }
 
     }
@@ -101,25 +84,16 @@ public class DbConn {
 
         Method temp = obj.getClass().getMethod("getId");
         int i = (int) temp.invoke(obj);
-
         String x = "SELECT * FROM " + obj.getClass().getSimpleName() + " WHERE id=" + Integer.toString(i) + " AND id_State=1;";
-
         Method temp1 = obj.getClass().getMethod("sqlObjectContructor", ResultSet.class);
-
         try {
-
             prep = getConnection().prepareStatement(x);
-
             rs = prep.executeQuery();
             rs.next();
             Object o = temp1.invoke(obj, rs);
-
-            //new client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9))
             con.close();
             return o;
-        } catch (Exception e) {
-            System.out.println("OLAAAAAAAAAA" + e.getCause().toString());
-        }
+        } catch (Exception e) {}
 
         return null;
     }
@@ -128,42 +102,45 @@ public class DbConn {
 
         Method temp = obj.getClass().getMethod("getId");
         int i = (int) temp.invoke(obj);
-        String x = "SELECT * FROM " + arr.getClass().getSimpleName() + " LEFT JOIN " + obj.getClass().getSimpleName() + " ON " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + " = " + obj.getClass().getSimpleName() + ".id  WHERE " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + "=" + Integer.toString(i) + " AND " + arr.getClass().getSimpleName() + ".id_State=1;";
-
+        String x = "SELECT * FROM " + arr.getClass().getSimpleName() + " JOIN " + obj.getClass().getSimpleName() + " ON " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + " = " + obj.getClass().getSimpleName() + ".id  WHERE " + arr.getClass().getSimpleName() + ".id_" + obj.getClass().getSimpleName() + "=" + Integer.toString(i) + " AND " + arr.getClass().getSimpleName() + ".id_State=1;";
         Method temp1 = arr.getClass().getMethod("sqlObjectContructor", ResultSet.class);
         ArrayList<Object> all = new ArrayList<>();
         try {
             prep = getConnection().prepareStatement(x);
             rs = prep.executeQuery();
             while (rs.next()) {
-
                 all.add(temp1.invoke(arr, rs));
             }
             con.close();
             return all;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) {}
         return null;
     }
 
-    public ArrayList<Object> customSelect(String query) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        ArrayList<Object> temp = new ArrayList<>();
-        int i = 1;
+    public ArrayList<GenericResponse> customRequest(String query) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        ArrayList<GenericResponse> temp=new ArrayList<>();        
         try {
             prep = getConnection().prepareStatement(query);
-            rs = prep.executeQuery();
-            while (rs.next()) {
-                temp.add(rs.getObject(i));
-                i++;
-            };
+            rs = prep.executeQuery();            
+            temp.add(r.mapRow(rs));
             con.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return temp;
+            return temp;
+        } catch (SQLException e) {}
+        return null;
     }
 
+     public static RowMapper r = new RowMapper() {
+        @Override
+        public GenericResponse mapRow(ResultSet rs) throws SQLException {
+            int i=1;
+            GenericResponse temp=new GenericResponse();
+            try {
+                while (rs.next()) {
+                    temp.setObjectAtribute(rs.getString(i++));
+                }    
+                return temp;
+            } catch (Exception e) {} 
+            return null;
+        }
+     };
 }

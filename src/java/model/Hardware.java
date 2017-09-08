@@ -18,18 +18,21 @@ public class Hardware {
     private int id;
     private String hard_name;
     private String hard_ip;
+    private State state;
     private ArrayList<Sensor> Sensor;
 
-    public Hardware(String hard_name, String hard_ip, ArrayList<Sensor> Sensor) {
+    public Hardware(String hard_name, String hard_ip, int state, ArrayList<Sensor> Sensor) {
         this.hard_name = hard_name;
         this.hard_ip=hard_ip;
+        this.state = State.getEnum(state);
         this.Sensor=Sensor;
     }
     
-    public Hardware(int id, String hard_name, String hard_ip) {
+    public Hardware(int id, String hard_name, String hard_ip, int state) {
         this.id = id;
         this.hard_name = hard_name;
         this.hard_ip=hard_ip;
+        this.state = State.getEnum(state);
         this.Sensor=new ArrayList<>();
     }
     
@@ -88,7 +91,7 @@ public class Hardware {
     }
 	
     public Hardware sqlObjectContructor(ResultSet rs) throws SQLException{
-	return new Hardware(rs.getInt(1), rs.getString(2), rs.getString(3));
+	return new Hardware(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
     }
 
         

@@ -19,8 +19,9 @@ public class Login {
     private String password;
     private String permission;
     private State state;
+    private String token;
 
-    public Login(String login, String password, String permission, int state) {
+    public Login(String login, String password, String permission, int state, String token) {
         this.login = login;
         this.password = password;
         this.permission = permission;
@@ -32,6 +33,7 @@ public class Login {
         this.password = "";
         this.permission = "";
         this.state = null;
+        this.token="";
     }
     
     public int getId() {
@@ -74,6 +76,14 @@ public class Login {
         this.state = state;
     }
     
+    public State getToken() {
+        return state;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
     public String delete(int id_Client){
         return "UPDATE login SET id_state=0  WHERE id_Client="+id_Client+" AND login="+this.login+";";
     }
@@ -92,7 +102,7 @@ public class Login {
     }*/
 	
     public Login sqlObjectContructor(ResultSet rs) throws SQLException{
-	return new Login(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+	return new Login(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5));
     }
 
 

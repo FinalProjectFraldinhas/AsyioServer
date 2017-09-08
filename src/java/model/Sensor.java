@@ -16,22 +16,26 @@ public class Sensor {
     
     private int id;
     private String sensor_name;
+    private State state;
     private ArrayList <Counts> Counts;
 
-    public Sensor(String sensor_name, ArrayList<Counts> Counts) {
+    public Sensor(String sensor_name,int state, ArrayList<Counts> Counts) {
         this.sensor_name = sensor_name;
+        this.state = State.getEnum(state);
         this.Counts = Counts;
     }
 
-    public Sensor(int id, String sensor_name) {
+    public Sensor(int id, String sensor_name, int state) {
         this.id = id;
         this.sensor_name = sensor_name;
+        this.state = State.getEnum(state);
         this.Counts=new ArrayList<>();
     }
     
     public Sensor(Integer id) {
         this.id = id;
         this.sensor_name = "";
+        this.state = null;
         this.Counts=new ArrayList<>();
     }
 
@@ -72,7 +76,7 @@ public class Sensor {
     }
 	
     public Sensor sqlObjectContructor(ResultSet rs) throws SQLException{
-	return new Sensor(rs.getInt(1), rs.getString(2));
+	return new Sensor(rs.getInt(1), rs.getString(2), rs.getInt(3));
     }
 
         

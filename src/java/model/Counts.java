@@ -9,9 +9,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import static tools.Tools.convertIntsArrayToString;
-import static tools.Tools.convertStringToInts;
-
+import tools.RowMapper;
 /**
  *
  * @author missym
@@ -20,19 +18,22 @@ public class Counts{
     
     private int id;
     private Date date;
-    private ArrayList <Integer> values;
+    private ArrayList <Float> values;
 
-    public Counts(int id, Date date, ArrayList<Integer> values) {
+    public Counts(int id, Date date, String rawValues) {
         this.id=id;
         this.date = date;
-        this.values = values;
+        this.values = new ArrayList <Float>();
+        String[] temp=rawValues.split(" ");
+        for(int i=0; i<temp.length; this.values.add(Float.parseFloat(temp[i++])));
+        
     }
 
-    public Counts(int id, Date date, String dump) {
+   /* public Counts(int id, Date date, String dump) {
         this.id = id;
         this.date = date;
-        this.values=convertStringToInts(dump,  new ArrayList<>());
-    }  
+     //   this.values=convertStringToFloats(dump,  new ArrayList<>());
+    } */ 
 
     public int getId() {
         return id;
@@ -46,11 +47,11 @@ public class Counts{
         this.date = date;
     }
 
-    public ArrayList <Integer> getValues() {
+    public ArrayList <Float> getValues() {
         return values;
     }
 
-    public void setValues(ArrayList <Integer> values) {
+    public void setValues(ArrayList <Float> values) {
         this.values = values;
     }
     
@@ -58,13 +59,13 @@ public class Counts{
         return "DELETE FROM Counts WHERE id="+this.id+";";
     }	
 	
-    public String insert(){
-	return "INSERT INTO Counts (id, date, count_dump) VALUES('"+Integer.toString(this.id)+"', '"+this.date+"', '"+convertIntsArrayToString(this.values)+"');";
+    /*public String insert(){
+	return "INSERT INTO Counts (id, date, count_dump) VALUES('"+Float.toString(this.id)+"', '"+this.date+"', '"+convertIntsArrayToString(this.values)+"');";
     }
 	
     public String update(){
-	return "UPDATE Counts SET date='"+this.date+"', count_dump='"+convertIntsArrayToString(this.values)+"' WHERE id="+Integer.toString(this.id)+";";
-    }
+//	return "UPDATE Counts SET date='"+this.date+"', count_dump='"+convertIntsArrayToString(this.values)+"' WHERE id="+Integer.toString(this.id)+";";
+    }*/
 	
     public String select(){
 	return "SELECT * FROM Counts;";
@@ -72,6 +73,11 @@ public class Counts{
 	
     public Counts sqlObjectContructor(ResultSet rs) throws SQLException{
 	return new Counts(rs.getInt(1), rs.getDate(2), rs.getString(3));
+    }
+
+   
+    public Counts rowMapper(ResultSet rs) throws SQLException {
+        return new Counts(rs.getInt("id"), rs.getDate("date"), rs.getString("rawValues"));
     }
     
     

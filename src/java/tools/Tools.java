@@ -7,7 +7,15 @@ package tools;
 
 import connection.DbConn;
 import java.lang.reflect.*;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import model.Counts;
 
 /**
  *
@@ -29,7 +37,7 @@ public class Tools {
 
     public static Helper h = new Helper() {
         @Override
-        public Object buildObjectMap(Object obj, Helper h) {
+        public Object buildObjectMap(Helper h, Object obj) {
 
             DbConn conn = new DbConn();
 
@@ -48,7 +56,7 @@ public class Tools {
                             temp = c.newInstance(0);
 
                             Method mset = obj.getClass().getMethod("set" + f.getName().toString(), ArrayList.class);
-                            
+
                             Method mget = obj.getClass().getMethod("get" + f.getName());
 
                             mset.invoke(obj, conn.selectFillArrayInObject(obj, temp));
@@ -64,7 +72,7 @@ public class Tools {
                             e.printStackTrace();
                         }
 
-                        return x.equals(Class.forName("model.Counts")) ? obj : buildObjectMap(temp, h);
+                        return x.equals(Class.forName("model.Counts")) ? obj : buildObjectMap(h, temp);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -76,7 +84,32 @@ public class Tools {
     };
 
     public static Object buildObjectMapHelper(Helper h, Object o) throws ClassNotFoundException {
-        return buildObjectMapHelper((Helper) h.buildObjectMap(o, h), o);
+        return buildObjectMapHelper((Helper) h.buildObjectMap(h, o), o);
     }
+
+    public static java.sql.Date stringToSqlDate(String date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date parsed;
+        try {
+            parsed = format.parse(date);
+
+            java.sql.Date sql = new java.sql.Date(parsed.getTime());
+            return sql;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static java.sql.Date addDaysToSqlDate(java.sql.Date date, int days) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_YEAR, days);
+        return new java.sql.Date(cal.getTime().getTime());
+    }
+
+   
 
 }

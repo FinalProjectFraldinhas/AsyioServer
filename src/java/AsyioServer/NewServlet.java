@@ -17,10 +17,14 @@ import service.Req;
  *
  * @author Miss M
  */
-
 @SuppressWarnings("serial")
 public class NewServlet extends HttpServlet {
-        HttpRequests hr=new HttpRequests();
+
+    HttpRequests hr = new HttpRequests();
+    public static String ip;
+    public static HttpServletRequest req;
+    public static HttpSession session;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,34 +34,41 @@ public class NewServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @SuppressWarnings("empty-statement")
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            response.setContentType("application/json");  
-             
+        
+            response.setContentType("application/json");
+            
+            
+            try (PrintWriter out = response.getWriter()) {            
+            ip = request.getRemoteAddr();
+            req=request;
             Gson gson = new Gson();
- 
-             try {
             StringBuilder sb = new StringBuilder();
             String s;
-            while ((s = request.getReader().readLine()) != null) {
-                sb.append(s);}
-      
-            Req r = gson.fromJson(sb.toString(), Req.class);            
-            Class<?>[] cArg = new Class<?>[r.getParams().length];
-            for(int i=0; i<r.getParams().length; cArg[i++]=String.class); 
-            Method temp=hr.getClass().getMethod(r.getExecute(), cArg);
-	    Object o= temp.invoke(hr, r.getParams());
-            String json = gson.toJson(o);
-            out.print(json);
-            out.flush();
-            
-        } catch (Exception e) {}
-    } 
+
+            try {
+
+                while ((s = request.getReader().readLine()) != null) {
+                    sb.append(s);
+                }
+
+                Req r = gson.fromJson(sb.toString(), Req.class);
+                Class<?>[] cArg = new Class<?>[r.getParams().length];
+                for (int i = 0; i < r.getParams().length; cArg[i++] = String.class);
+                Method temp = hr.getClass().getMethod(r.getExecute(), cArg);
+                Object o = temp.invoke(hr, r.getParams());
+                String json = gson.toJson(o);
+                out.print(json);
+                //out.print((request.getSession(false).getAttribute("sessionClient")).getClass().toString());
+                out.flush();
+
+            } catch (Exception e) {
+            }
+         out.close();
         }
-    
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -70,7 +81,7 @@ public class NewServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -86,6 +97,8 @@ public class NewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        
     }
 
     /**
@@ -96,6 +109,6 @@ public class NewServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
